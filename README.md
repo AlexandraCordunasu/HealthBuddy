@@ -1,3 +1,4 @@
 # HealthBuddy
 proiect_python!!
-ok
+Vulpe - 28.12.2022 - 
+    myapp in loc de mainapp
