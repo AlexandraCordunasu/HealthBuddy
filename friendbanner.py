@@ -27,8 +27,7 @@ class FriendBanner(FloatLayout):
                                  + kwargs['friend_id'])
         data = check_req.json()
         unique_identifer = list(data.keys())[0]
-        their_avatar = data[unique_identifer]['avatar']
-        print(their_avatar)
+
         self.remove_label = LabelButton(size_hint=(.10, 1), pos_hint={"top": 1, "right": .1},
                                         on_release=partial(App.get_running_app().remove_friend, kwargs['friend_id']))
         with self.remove_label.canvas.before:
@@ -36,17 +35,12 @@ class FriendBanner(FloatLayout):
             self.rect2 = Rectangle(size=self.remove_label.size, pos=self.remove_label.pos)
         self.remove_label.bind(pos=self.update_remove_label_rect, size=self.update_remove_label_rect)
 
-        image_button = ImageButton(source="icons/avatars/" + their_avatar, size_hint=(.3, .8),
-                                   pos_hint={"top": .9, "right": 0.5},
-                                   on_release=partial(App.get_running_app().load_friend_workout_screen, kwargs['friend_id']))
-
         # Add the friend's ID
         self.friend_label = LabelButton(text=kwargs['friend_id_text'], markup=True,size_hint=(.5, 1),
                                    pos_hint={"top": 1, "right": 1},
                                    on_release=partial(App.get_running_app().load_friend_workout_screen,
                                                       kwargs['friend_id']))
         self.add_widget(self.remove_label)
-        self.add_widget(image_button)
         self.add_widget(self.friend_label)
 
 

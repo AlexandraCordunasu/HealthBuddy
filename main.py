@@ -44,8 +44,7 @@ class SettingsScreen(Screen):
     pass
 
 
-class ChangeAvatarScreen(Screen):
-    pass
+
 
 #GUI =   # Make sure this is after all class definitions!
 class MainApp(App):
@@ -137,12 +136,6 @@ class MainApp(App):
         self.root.ids.add_workout_screen.ids.day_input.text = str(day)
         self.root.ids.add_workout_screen.ids.year_input.text = str(year)
 
-        # Populate avatar grid
-        avatar_grid = self.root.ids['change_avatar_screen'].ids['avatar_grid']
-        for root_dir, folders, files in walk("icons/avatars"):
-            for f in files:
-                img = ImageButtonSelectable(source="icons/avatars/" + f, on_release=partial(self.change_avatar, f))
-                avatar_grid.add_widget(img)
 
         # Populate workout image grid
         workout_image_grid = self.root.ids['add_workout_screen'].ids['workout_image_grid']
@@ -174,9 +167,6 @@ class MainApp(App):
             friend_id_label = self.root.ids['settings_screen'].ids['friend_id_label']
             friend_id_label.text = "Friend ID: " + str(self.my_friend_id)
 
-            # Get and update avatar image
-            avatar_image = self.root.ids['avatar_image']
-            avatar_image.source = "icons/avatars/" + data['avatar']
 
             # Get friends list
             self.friends_list = data['friends']
@@ -366,20 +356,6 @@ class MainApp(App):
                 friend_banner_grid.remove_widget(w)
 
 
-    def change_avatar(self, image, widget_id):
-        # Change avatar in the app
-        avatar_image = self.root.ids['avatar_image']
-        avatar_image.source = "icons/avatars/" + image
-
-
-        # Change avatar in firebase database
-        my_data = '{"avatar": "%s"}' % image
-        requests.patch(
-            "https://friendly-fitness.firebaseio.com/%s.json?auth=%s" % (self.local_id, self.id_token),
-            data=my_data)
-
-        self.change_screen("settings_screen", direction='left', mode='pop')
-
     def add_workout(self):
         # Get data from all fields in add workout screen
         workout_ids = self.root.ids['add_workout_screen'].ids
@@ -508,9 +484,6 @@ class MainApp(App):
             if w.__class__ == WorkoutBanner:
                 friend_banner_grid.remove_widget(w)
 
-        # Populate their avatar image
-        friend_avatar_image = self.root.ids.friend_workout_screen.ids.friend_workout_screen_image
-        friend_avatar_image.source = "icons/avatars/" + list(friend_data.values())[0]['avatar']
 
         # Populate their friend ID and nickname
         print("Need to populate nickname")

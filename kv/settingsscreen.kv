@@ -30,16 +30,6 @@
             pos_hint: {"top": 1, "left": 1}
         ClickableGrid:
             size_hint: .8, .1
-            pos_hint: {"top": .8, "right": .9}
-            on_release:
-                app.change_screen("change_avatar_screen", direction='right', mode='push')
-            Image:
-                source: "icons/avatars/man.png"
-            Label:
-                text: "[u]Change Avatar[/u]"
-                markup: True
-        ClickableGrid:
-            size_hint: .8, .1
             pos_hint: {"top": .6, "right": .9}
             on_release:
                 app.change_screen("add_friend_screen", direction = 'right', mode='push')

@@ -1,6 +1,5 @@
 #:include kv/homescreen.kv
 #:include kv/settingsscreen.kv
-#:include kv/changeavatarscreen.kv
 #:include kv/loginscreen.kv
 #:include kv/addfriendscreen.kv
 #:include kv/addworkoutscreen.kv
@@ -36,7 +35,7 @@ GridLayout:
                 Rectangle:
                     size: self.size
                     pos: self.pos
-            # Put two weather icons and avatar icon
+
             rows: 1
             pos_hint: {"top": .95, "left": 1}
             size_hint: 1, .15
@@ -46,11 +45,7 @@ GridLayout:
                 size_hint: 0.25, 0.5
                 pos_hint: {"top": 1, "right": 0.25}
                 opacity: 0
-            Image:
-                source: "icons/avatars/man.png"
-                id: avatar_image
-                size_hint: 0.5, 1
-                pos_hint: {"top": 1.15, "right": 0.75}
+
             Image:
                 id: time_indicator4
                 source: "icons/007-crescent-moon.png"
@@ -70,9 +65,6 @@ GridLayout:
             SettingsScreen:
                 name: "settings_screen"
                 id: settings_screen
-            ChangeAvatarScreen:
-                name: "change_avatar_screen"
-                id: change_avatar_screen
             AddFriendScreen:
                 name: "add_friend_screen"
                 id: add_friend_screen
