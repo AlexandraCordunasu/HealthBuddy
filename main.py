@@ -35,6 +35,10 @@ class SettingsScreen(Screen):
     pass
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ef2db32543fa526ec279c78c002b5aeb36d50a8e
 
 #GUI =   # Make sure this is after all class definitions!
 class MainApp(App):
@@ -127,12 +131,50 @@ class MainApp(App):
             print("id token is", id_token)
             print(result.ok)
             print("DATA IS", data)
+<<<<<<< HEAD
             
       
        
            
          
           
+=======
+            self.my_friend_id = data['my_friend_id']
+            friend_id_label = self.root.ids['settings_screen'].ids['friend_id_label']
+            friend_id_label.text = "Friend ID: " + str(self.my_friend_id)
+
+
+            # Get friends list
+            self.friends_list = data['friends']
+
+            # Get nicknames
+            try:
+                print(data['nicknames'])
+                for i, friend_id in enumerate(self.friends_list.split(",")):
+                    if friend_id:
+                        print(i, friend_id)
+                        self.nicknames[friend_id] = data['nicknames'][i]
+            except:
+                self.nicknames = data.get('nicknames', {})
+            # Populate friends list grid
+            friends_list_array = self.friends_list.split(",")
+            for friend_id in friends_list_array:
+                friend_id = friend_id.replace(" ", "")
+                if friend_id == "":
+                    continue
+                try:
+                    nicknames = list(self.friends_list.keys())
+                except:
+                    nicknames = self.nicknames
+                if friend_id in nicknames:
+                    friend_id_text = "[u]" + self.nicknames[friend_id] + "[/u]"
+                else:
+                    friend_id_text = "[u]Friend ID: " + friend_id + "[/u]"
+                friend_banner = FriendBanner(friend_id=friend_id, friend_id_text=friend_id_text)
+                self.root.ids['friends_list_screen'].ids['friends_list_grid'].add_widget(friend_banner)
+
+
+>>>>>>> ef2db32543fa526ec279c78c002b5aeb36d50a8e
             # Get and update streak label
             streak_label = self.root.ids['home_screen'].ids['streak_label']
             #streak_label.text = str(data['streak']) + " Day Streak" # Thisis updated if there are workouts
@@ -216,7 +258,29 @@ class MainApp(App):
 
 
 
+<<<<<<< HEAD
    
+=======
+        # Need to clear widgets from previous user's friends list
+        friends_list_grid = self.root.ids['friends_list_screen'].ids['friends_list_grid']
+        for w in friends_list_grid.walk():
+            if w.__class__ == FriendBanner:
+                friends_list_grid.remove_widget(w)
+
+        # Need to clear widgets from previous user's workout grid
+        workout_banner = self.root.ids['home_screen'].ids['banner_grid']
+        for w in workout_banner.walk():
+            if w.__class__ == WorkoutBanner:
+                workout_banner.remove_widget(w)
+
+        # Need to clear widgets from previous user's friend's workout grid
+        friend_banner_grid = self.root.ids['friend_workout_screen'].ids['friend_banner_grid']
+        for w in friend_banner_grid.walk():
+            if w.__class__ == WorkoutBanner:
+                friend_banner_grid.remove_widget(w)
+
+
+>>>>>>> ef2db32543fa526ec279c78c002b5aeb36d50a8e
     def add_workout(self):
         # Get data from all fields in add workout screen
         workout_ids = self.root.ids['add_workout_screen'].ids
@@ -304,9 +368,90 @@ class MainApp(App):
         self.change_screen("home_screen", direction="backwards")
 
 
+<<<<<<< HEAD
     
     
        
+=======
+    def remove_friend(self, friend_id_to_remove, *args):
+        # Remove the friend id from the friends list variable
+        self.friends_list = self.friends_list.replace(",%s"%friend_id_to_remove, "")
+
+        # Update the firebase database with the new (truncated) friends list
+        patch_data = '{"friends": "%s"}' % self.friends_list
+        patch_req = requests.patch(
+            "https://friendly-fitness.firebaseio.com/%s.json?auth=%s" % (self.local_id, self.id_token),
+            data=patch_data)
+
+        # Remove the friend banner
+        friends_list_grid = self.root.ids['friends_list_screen'].ids['friends_list_grid']
+        for w in friends_list_grid.walk():
+            if w.__class__ == FriendBanner:
+                if w.friend_id == friend_id_to_remove:
+                    friends_list_grid.remove_widget(w)
+
+        # Reload the friends list screen
+
+    def load_friend_workout_screen(self, friend_id, widget):
+        # Initialize friend streak label to 0
+        friend_streak_label = self.root.ids['friend_workout_screen'].ids['friend_streak_label']
+        friend_streak_label.text = "0 Day Streak"
+
+
+        # Make it so we know which friend's workout screen has been loaded for app.set_friend_nickname
+        self.their_friend_id = friend_id
+
+        # Get their workouts by using their friend id to query the database
+        friend_data_req = requests.get('https://friendly-fitness.firebaseio.com/.json?orderBy="my_friend_id"&equalTo=' + friend_id)
+
+        friend_data = friend_data_req.json()
+        workouts = list(friend_data.values())[0]['workouts']
+
+        friend_banner_grid = self.root.ids['friend_workout_screen'].ids['friend_banner_grid']
+
+        # Remove each widget in the friend_banner_grid
+        for w in friend_banner_grid.walk():
+            if w.__class__ == WorkoutBanner:
+                friend_banner_grid.remove_widget(w)
+
+
+        # Populate their friend ID and nickname
+        print("Need to populate nickname")
+        their_friend_id_label = self.root.ids.friend_workout_screen.ids.friend_workout_screen_friend_id
+        try:
+            nicknames = list(self.nicknames.keys())
+        except:
+            nicknames = self.nicknames
+        if friend_id in nicknames:
+            their_friend_id_label.text = "[u]" + self.nicknames[friend_id] + "[/u]"
+        else:
+            their_friend_id_label.text = "[u]Nickname[/u]"
+
+        # Populate the friend_workout_screen
+        # Loop through each key in the workouts dictionary
+        #    for the value for that key, create a workout banner
+        #    add the workout banner to the scrollview
+        if workouts == {} or workouts == "":
+            # Change to the friend_workout_screen
+            self.change_screen("friend_workout_screen")
+            return
+        workout_keys = list(workouts.keys())
+        workout_keys.sort(key=lambda value: datetime.strptime(workouts[value]['date'], "%m/%d/%Y"))
+        workout_keys = workout_keys[::-1]
+        for workout_key in workout_keys:
+            workout = workouts[workout_key]
+            W = WorkoutBanner(workout_image=workout['workout_image'], description=workout['description'],
+                              type_image=workout['type_image'], number=workout['number'], units=workout['units'],
+                              likes=workout['likes'],date=workout['date'], likeable=True, workout_key=workout_key)
+            friend_banner_grid.add_widget(W)
+
+        # Populate the streak label
+        friend_streak_label.text = helperfunctions.count_workout_streak(workouts) + " Day Streak"
+
+
+        # Change to the friend_workout_screen
+        self.change_screen("friend_workout_screen")
+>>>>>>> ef2db32543fa526ec279c78c002b5aeb36d50a8e
 
     def change_screen(self, screen_name, direction='forward', mode = ""):
         # Get the screen manager from the kv file
