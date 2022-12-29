@@ -18,8 +18,8 @@ QUESTIONS = {
     ],
     "Ce ati dori sa lucrati mai mult?" :[
         "Gambe","Coapse","Fesieri","Picioare","Abdomen","Piept","Spate","Biceps","Triceps","Umeri","Brate","Picioare"
-    ]
+    ],
     "Cate minute faceti sport pe zi?" : [
         "0 minute", "30 minute","45 minute","60 minute", "90 minute","120 minute","150 min","190 minute"
-    ]
+    ],
 }
