@@ -30,10 +30,7 @@ class MyFirebase():
             app.local_id = localId
             app.id_token = idToken
 
-            # Create new key in database from localId
-            # Get friend ID
-            # Get request on firebase to get the next friend id
-            self.friend_get_req = UrlRequest("https://friendly-fitness.firebaseio.com/next_friend_id.json?auth=" + idToken, ca_file=certifi.where(), on_success=self.on_friend_get_req_ok, on_error=self.on_error, on_failure=self.on_error)
+            
 
         elif sign_up_request.ok == False:
             error_data = json.loads(sign_up_request.content.decode())
@@ -69,11 +66,7 @@ class MyFirebase():
             app.id_token = idToken
 
             # Create new key in database from localId
-            # Get friend ID
-            # Get request on firebase to get the next friend id
-            # --- User exists so i dont need to get a friend id
-            #self.friend_get_req = UrlRequest("https://friendly-fitness.firebaseio.com/next_friend_id.json?auth=" + idToken, on_success=self.on_friend_get_req_ok)
-            #app.change_screen("home_screen")
+          
             app.on_start()
         elif signin_request.ok == False:
             error_data = json.loads(signin_request.content.decode())
@@ -81,37 +74,20 @@ class MyFirebase():
             app.root.ids['login_screen'].ids['login_message'].text = "EMAIL EXISTS - " + error_message.replace("_", " ")
 
 
-    def on_friend_get_req_ok(self, *args):
-        app = App.get_running_app()
-        my_friend_id = self.friend_get_req.result
-        app.set_friend_id(my_friend_id)
-        friend_patch_data = '{"next_friend_id": %s}' % (my_friend_id+1)
-        friend_patch_req = UrlRequest("https://friendly-fitness.firebaseio.com/.json?auth=" + app.id_token,
-                                          req_body=friend_patch_data, ca_file = certifi.where(), method='PATCH')
+    
 
 
-        # Update firebase's next friend id field
         # Default streak
         # Default avatar
-        # Friends list
+
         # Empty workouts area
-        my_data = '{"avatar": "man.png", "nicknames": {}, "friends": "", "workouts": "", "streak": "0", "my_friend_id": %s}' % my_friend_id
+        my_data = '{"avatar": "man.png", "nicknames": {}, "workouts": "", "streak": "0", }' 
         post_request = UrlRequest("https://friendly-fitness.firebaseio.com/" + app.local_id + ".json?auth=" + app.id_token, ca_file=certifi.where(),
                        req_body=my_data, method='PATCH')
 
         app.change_screen("home_screen")
 
-    def update_likes(self, friend_id, workout_key, likes, *args):
-        app = App.get_running_app()
-        friend_patch_data = '{"likes": %s}' % (likes)
-        # Get their database entry based on their friend id so we can find their local ID
-        check_req = requests.get('https://friendly-fitness.firebaseio.com/.json?orderBy="my_friend_id"&equalTo=' + friend_id)
-        data = check_req.json()
-        their_local_id = list(data.keys())[0]
-
-        self.update_likes_patch_req = UrlRequest("https://friendly-fitness.firebaseio.com/%s/workouts/%s.json?auth="%(their_local_id, workout_key) + app.id_token,
-                                          req_body=friend_patch_data, ca_file=certifi.where(), method='PATCH', on_success=self.update_likes_ok, on_failure=self.update_likes_ok)
-
+    
     def update_likes_ok(self, *args):
         print(self.update_likes_patch_req.result)
 
