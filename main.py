@@ -10,7 +10,7 @@ from functools import partial
 from os import walk
 from myfirebase import MyFirebase
 from datetime import datetime
-
+import quiz
 import kivy.utils
 from kivy.utils import platform
 import requests
@@ -34,7 +34,7 @@ class LoginScreen(Screen):
 class SettingsScreen(Screen):
     pass
 
-
+    
 
 #GUI =   # Make sure this is after all class definitions!
 class MainApp(App):
