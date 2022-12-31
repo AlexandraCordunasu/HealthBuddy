@@ -34,7 +34,8 @@ class LoginScreen(Screen):
 class SettingsScreen(Screen):
     pass
 
-    
+class ProfileScreen(Screen):
+    pass 
 
 #GUI =   # Make sure this is after all class definitions!
 class MainApp(App):

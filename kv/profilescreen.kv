@@ -1,0 +1,90 @@
+#:import utils kivy.utils
+
+
+<ProfileScreen>:
+    canvas:
+        Color:
+            rgb: utils.get_color_from_hex("#35477d")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: utils.get_color_from_hex("#35477d")
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label:
+            text: "Raspundeti la intrebari"
+            id: select_workout_image_label
+            size_hint: 1, .05
+            pos_hint: {"top": 1, "right": 1}
+        ScrollView:
+            size_hint: 1, .15
+            pos_hint: {"top": .95, "right": 1}
+            GridLayout:
+                canvas:
+                    Color:
+                        rgb: utils.get_color_from_hex("#35477d")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                rows: 1
+                size_hint_x: None
+                width: self.minimum_width
+                col_default_width: '100dp'
+                col_force_default: True
+                id: workout_image_grid
+                padding: 5,
+        TextInput:
+            hint_text: " Varsta"
+            size_hint: .8, .1
+            pos_hint: {"top": .25, "right": .9}
+            id: description_input
+            on_text:
+                self.focus = not self.focus if "\n" in self.text else self.focus
+        TextInput:
+            hint_text: " Greutate (kg)"
+            size_hint: .8, .1
+            pos_hint: {"top": .5, "right": .9}
+            id: description_input
+            on_text:
+                self.focus = not self.focus if "\n" in self.text else self.focus
+        TextInput:
+            hint_text: " Inaltime (cm)"
+            size_hint: .8, .1
+            pos_hint: {"top": .75, "right": .9}
+            id: description_input
+            on_text:
+                self.focus = not self.focus if "\n" in self.text else self.focus
+        
+
+
+        LabelButton:
+            text: "[u]Salveaza[/u]"
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#35477d") if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            size_hint: .5, .1
+            pos_hint: {"top": .1, "right": 1}
+            markup: True
+            on_release:
+                app.add_workout()
+        LabelButton:
+            text: "[u]Înapoi[/u]"
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#35477d") if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            size_hint: .5, .1
+            pos_hint: {"top": .1, "right": .5}
+            markup: True
+            on_release:
+                app.change_screen("home_screen", direction = 'backwards')
+

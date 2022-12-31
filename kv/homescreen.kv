@@ -44,6 +44,18 @@
                     app.change_screen("settings_screen", direction='right', mode='push')
             
             LabelButton:
+                text: "[u]Profil[/u]"
+                canvas.before:
+                    Color:
+                        rgb: utils.get_color_from_hex("#35477d") if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                markup: True
+                on_release:
+                    app.change_screen("profile_screen", direction='right', mode='push')
+
+            LabelButton:
                 text: "[u]Activitate nouă[/u]"
                 canvas.before:
                     Color:

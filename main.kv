@@ -2,7 +2,7 @@
 #:include kv/settingsscreen.kv
 #:include kv/loginscreen.kv
 #:include kv/addworkoutscreen.kv
-#:include kv/quiz.kv
+#:include kv/profilescreen.kv
 GridLayout:
     cols: 1
     FloatLayout:
@@ -69,6 +69,9 @@ GridLayout:
             AddWorkoutScreen:
                 name: "add_workout_screen"
                 id: add_workout_screen
+            ProfileScreen:
+                name: "profile_screen"
+                id: profile_screen
         Widget:
             size_hint: 1, .1
             pos_hint: {"top": .1, "right": 1}
