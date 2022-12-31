@@ -13,7 +13,7 @@
             # Streak label
             pos_hint: {"top": 1, "left": 1}
             size_hint: 1, .1
-            text: "0 Day Streak"
+            text: "Ziua 0 de activitate"
             id: streak_label
         ScrollView:
             pos_hint: {"top": .9, "left": 1}
@@ -32,7 +32,7 @@
             size_hint: 1, .1
             pos_hint: {"top": .1, "right": 1}
             LabelButton:
-                text: "[u]Settings[/u]"
+                text: "[u]Setări[/u]"
                 canvas.before:
                     Color:
                         rgb: utils.get_color_from_hex("#35477d") if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
@@ -44,7 +44,7 @@
                     app.change_screen("settings_screen", direction='right', mode='push')
             
             LabelButton:
-                text: "[u]New Workout[/u]"
+                text: "[u]Activitate nouă[/u]"
                 canvas.before:
                     Color:
                         rgb: utils.get_color_from_hex("#35477d") if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")

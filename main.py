@@ -145,9 +145,9 @@ class MainApp(App):
                 workout_keys = list(workouts.keys())
                 streak = helperfunctions.count_workout_streak(workouts)
                 if str(streak) == 0:
-                    streak_label.text = "0 Day Streak. Go workout!"
+                    streak_label.text = "Ziua 0 de activitate. Fă sport!"
                 else:
-                    streak_label.text = str(streak) + " Day Streak!"
+                    streak_label.text = "Ziua " + str(streak) + " de activitate!"
                 # Sort workouts by date then reverse (we want youngest dates at the start)
                 workout_keys.sort(key=lambda value : datetime.strptime(workouts[value]['date'], "%m/%d/%Y"))
                 workout_keys = workout_keys[::-1]
@@ -177,7 +177,7 @@ class MainApp(App):
 
 
         # Clear home screen
-        self.root.ids.home_screen.ids.streak_label.text = "0 Day Streak. Go workout!"
+        self.root.ids.home_screen.ids.streak_label.text = "Ziua 0 de activitate. Fă sport!"
 
         # Clear login screen
         self.root.ids.login_screen.ids.login_email.text = ""
@@ -295,9 +295,9 @@ class MainApp(App):
         workouts = data['workouts']
         streak = helperfunctions.count_workout_streak(workouts)
         if str(streak) == "0":
-            streak_label.text = str(streak) + " Day Streak. Go workout!"
+            streak_label.text = "Ziua" + str(streak) + " de activitate. Fă sport!"
         else:
-            streak_label.text = str(streak) + " Day Streak!"
+            streak_label.text = "Ziua " + str(streak) + " de activitate!"
 
 
         # Go back to the home screen
